@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Murray Osorio Chat</title>
+  <link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f6f8fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    #custom-wrapper {
+      width: 420px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      text-align: center;
+      box-sizing: border-box;
+      --chat--header--padding: var(--chat--spacing);
+      position: relative;
+    }
+    #n8n-chat {
+      height: 500px;
+      overflow: hidden;
+    }
+    /* n8n overrides */
+    :root {
+      --chat--window--width: 100%;
+      --chat--window--height: 500px;
+      --chat--message--padding: 12px;
+      --chat--message--font-size: 0.7rem;
+    }
+    .n8n-chat__window {
+      max-height: 100% !important;
+      overflow: hidden;
+    }
+    .n8n-chat__messages {
+      height: 100%;
+      max-height: 350px;
+      overflow-y: auto !important;
+    }
+    /* Disclaimer styling */
+    .ai-disclaimer {
+      font-size: 0.65rem;
+      line-height: 1.4;
+      color: #666;
+      margin-top: 12px;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <div id="custom-wrapper">
+    <!-- Chat widget container only -->
+    <div id="n8n-chat"></div>
+    <p class="ai-disclaimer">
+      Disclaimer: This content may include AI-generated material. While efforts have been made to ensure accuracy, please independently verify important details and seek professional advice when necessary.
+    </p>
+  </div>
+
+  <script type="module">
+    import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
+
+    const webhookUrl = 'https://murrayosorio.app.n8n.cloud/webhook/e6f73d02-2d2b-4494-869e-7f6942b37085/chat';
+
+    createChat({
+      webhookUrl,
+      mode: 'fullscreen',
+      allowFileUploads: true,  // keep native upload icon
+      target: '#n8n-chat',
+      initialMessages: [
+        'How can I assist you today?',
+        'When is my next paid holiday?',
+        'How much PTO do I get?'
+      ],
+      i18n: {
+        en: {
+          title: 'HR Support Agent',
+          subtitle: '',
+          inputPlaceholder: 'Type your question...',
+        },
+      },
+      onInit: () => {
+        const style = document.createElement('style');
+        style.textContent = `
+          .n8n-chat__header {
+            background-color: transparent !important;
+            box-shadow: none !important;
+          }
+          .n8n-chat__logo,
+          .n8n-chat__logo img {
+            background-color: transparent !important;
+          }
+          .n8n-chat, .n8n-chat * {
+            font-size: 12px !important;
+          }
+        `;
+        document.head.appendChild(style);
+      },
+    });
+  </script>
+</body>
+</html>
